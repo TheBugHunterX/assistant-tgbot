@@ -1,0 +1,9 @@
+# Ignore
+*.pyc
+*.json
+config.py
+log.txt
+venv
+
+# Exception 
+!.vscode/settings.json
