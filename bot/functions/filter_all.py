@@ -4,6 +4,7 @@ from telegram.constants import MessageOriginType
 from bot import owner_id
 from bot.helper.telegram_helper import Message
 
+
 async def func_filter_all(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat = update.effective_chat
     user = update.effective_user
@@ -25,7 +26,7 @@ async def func_filter_all(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 else:
                     await Message.reply_msg(update, "Error: Forward from None")
         else:
-            await Message.reply_msg(update, "I'm Alive!")
+            await Message.reply_msg(update, "Reply to user messages to send the message.")
         
         reaction = "👍" if sent_msg else "👎"
         await Message.react_msg(chat.id, e_msg.id, reaction)
@@ -34,6 +35,7 @@ async def func_filter_all(update: Update, context: ContextTypes.DEFAULT_TYPE):
     forwarded_msg = await Message.forward_msg(owner_id, chat.id, e_msg.id)
     if forwarded_msg.forward_origin.type == MessageOriginType.HIDDEN_USER:
         await Message.send_msg(owner_id, f"{user.id}")
+        await Message.send_msg(owner_id, f"{user.mention_html()}")
     
     reaction = "👍" if forwarded_msg else "👎"
     await Message.react_msg(chat.id, e_msg.id, reaction)

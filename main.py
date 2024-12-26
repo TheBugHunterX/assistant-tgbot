@@ -6,12 +6,21 @@ from telegram.ext import (
     CommandHandler,
     MessageHandler,
     filters,
+    ChatMemberHandler
 )
 from bot import bot_token, logger, owner_id, server_url
 from bot.helper.telegram_helper import Message
 from bot.functions.start import func_start
+from bot.functions.help import func_help
+from bot.functions.id import func_id
+from bot.functions.info import func_info
+from bot.functions.broadcast import func_broadcast
+from bot.functions.database import func_database
 from bot.functions.log import func_log
+from bot.functions.shell import func_shell
+from bot.functions.sys import func_sys
 from bot.functions.filter_all import func_filter_all
+from bot.modules.bot_chat_tracker.track_bot_chat import track_bot_chat_act
 
 
 async def server_alive():
@@ -38,7 +47,14 @@ def main():
     # functions
     BOT_COMMANDS = {
         "start": func_start,
-        "log": func_log
+        "help": func_help,
+        "id": func_id,
+        "info": func_info,
+        "broadcast": func_broadcast,
+        "database": func_database,
+        "log": func_log,
+        "shell": func_shell,
+        "sys": func_sys
     }
 
     for command, handler in BOT_COMMANDS.items():
@@ -46,6 +62,8 @@ def main():
     
     # filters
     application.add_handler(MessageHandler(filters.ALL, func_filter_all, block=False))
+    # Chat Member Handler
+    application.add_handler(ChatMemberHandler(track_bot_chat_act, ChatMemberHandler.MY_CHAT_MEMBER)) # for tacking bot/private chat
     # Check Updates
     application.run_polling(allowed_updates=Update.ALL_TYPES)
 
