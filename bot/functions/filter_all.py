@@ -2,7 +2,7 @@ from telegram import Update
 from telegram.ext import ContextTypes
 from telegram.constants import MessageOriginType
 from bot import owner_id
-from bot.helper.telegram_helper import Message
+from bot.helper.telegram_helper import Message, Button
 
 
 async def func_filter_all(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -22,11 +22,15 @@ async def func_filter_all(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     sent_msg = await Message.send_msg(re_msg.forward_origin.sender_user.id, e_msg.text_html)
             else:
                 if re_msg.from_user.is_bot:
-                    sent_msg = await Message.send_msg(re_msg.text, e_msg.text_html)
+                    victim_id = re_msg.text.split("#id")[1]
+                    sent_msg = await Message.send_msg(victim_id, e_msg.text_html)
                 else:
-                    await Message.reply_msg(update, "Error: Forward from None")
+                    await Message.reply_msg(update, "An error occured! Check /log")
         else:
             await Message.reply_msg(update, "Reply to user messages to send the message.")
+        
+        if re_msg and not sent_msg:
+            await Message.reply_msg(update, "Oops, something went wrong. Maybe <code>user id</code> wrong 🤔 or user blocked!!")
         
         reaction = "👍" if sent_msg else "👎"
         await Message.react_msg(chat.id, e_msg.id, reaction)
@@ -34,8 +38,23 @@ async def func_filter_all(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     forwarded_msg = await Message.forward_msg(owner_id, chat.id, e_msg.id)
     if forwarded_msg.forward_origin.type == MessageOriginType.HIDDEN_USER:
-        await Message.send_msg(owner_id, f"{user.id}")
-        await Message.send_msg(owner_id, f"{user.mention_html()}")
+        msg = (
+            f"» To answer {user.mention_html()} reply to this message!!\n\n"
+            f"<b>User Info:</b>\n"
+            f"<b>Name:</b> <code>{user.full_name}</code>\n"
+            f"<b>Mention:</b> {user.mention_html()}\n"
+            f"<b>Username:</b> {user.name}\n"
+            f"<b>ID:</b> <code>{user.id}</code>\n"
+            f"<b>Lang:</b> <code>{user.language_code}</code>\n"
+            f"#id{user.id}"
+        )
+
+        btn_data = {
+            "User Profile": f"tg://user?id={user.id}"
+        }
+
+        btn = await Button.ubutton(btn_data)
+        await Message.send_msg(owner_id, msg, forwarded_msg.id, btn)
     
     reaction = "👍" if forwarded_msg else "👎"
     await Message.react_msg(chat.id, e_msg.id, reaction)
