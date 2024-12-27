@@ -22,7 +22,12 @@ async def func_filter_all(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     sent_msg = await Message.send_msg(re_msg.forward_origin.sender_user.id, e_msg.text_html)
             else:
                 if re_msg.from_user.is_bot:
-                    victim_id = re_msg.text.split("#id")[1]
+                    check_msg = re_msg.text.split("#id")
+                    if len(check_msg) >= 2:
+                        victim_id = check_msg[1]
+                    else:
+                        await Message.reply_msg(update, "You have replied the wrong message.")
+                        return
                     sent_msg = await Message.send_msg(victim_id, e_msg.text_html)
                 else:
                     await Message.reply_msg(update, "An error occured! Check /log")
