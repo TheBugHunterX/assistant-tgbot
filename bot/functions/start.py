@@ -13,7 +13,8 @@ async def func_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"Interested in creating an assistant like me?\n"
         f"- Check out the <a href='https://github.com/bishalqx980/assistant-tgbot/'>Source Code</a>.\n\n"
         f"Looking for a feature-rich group management bot?\n"
-        f"- Take a look at @MissCiri_bot or explore the <a href='https://github.com/bishalqx980/tgbot/'>Source Code</a>."
+        f"- Take a look at @MissCiri_bot or explore the <a href='https://github.com/bishalqx980/tgbot/'>Source Code</a>.\n\n"
+        "<i><b>Note:</b> You can understand whether or not the message was sent by bot reaction!!</i>"
     )
 
     if user.id == owner_id:

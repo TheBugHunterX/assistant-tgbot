@@ -13,7 +13,8 @@ async def func_help(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/broadcast - broadcast message to all user\n"
         "/database - get database info\n"
         "/log - for development/finding any error/bug\n"
-        "/shell - use system shell\n"
+        "/shell - use system shell\n\n"
+        "<i><b>Note:</b> You can understand whether or not the message was sent by bot reaction!!</i>"
     )
 
     await Message.reply_msg(update, msg)
