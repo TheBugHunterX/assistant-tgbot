@@ -91,8 +91,8 @@ async def func_filter_all(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 f"<b>Lang:</b> <code>{user.language_code}</code>\n"
                 f"#id{user.id}"
             )
-
-            btn = await Button.ubutton({"User Profile": f"tg://user?id={user.id}"})
+            
+            btn = await Button.ubutton({"User Profile": f"tg://user?id={user.id}"}) if user.username else None
             await Message.send_msg(owner_id, msg, forwarded_msg.id, btn)
         
         reaction = "❤" if forwarded_msg else "👎"
