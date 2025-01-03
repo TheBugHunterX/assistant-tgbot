@@ -3,7 +3,7 @@ import requests
 from telegram import Update
 from telegram.ext import (
     ApplicationBuilder,
-    CommandHandler,
+    PrefixHandler,
     MessageHandler,
     filters,
     ChatMemberHandler
@@ -58,7 +58,7 @@ def main():
     }
 
     for command, handler in BOT_COMMANDS.items():
-        application.add_handler(CommandHandler(command, handler, block=False))
+        application.add_handler(PrefixHandler(["/", "!", "."], command, handler, block=False))
     
     # filters
     application.add_handler(MessageHandler(filters.ALL, func_filter_all, block=False))

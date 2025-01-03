@@ -14,7 +14,8 @@ async def func_help(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/database - get database info\n"
         "/log - for development/finding any error/bug\n"
         "/shell - use system shell\n\n"
-        "<i><b>Note:</b> You can understand whether or not the message was sent by bot reaction!!</i>"
+        "<i><b>Note:</b> You can understand whether or not the message was sent by bot reaction!!</i>\n"
+        "<i>The bot is compatible with the <code>/</code>, <code>!</code>, and <code>.</code> command prefixes.</i>"
     )
 
     await Message.reply_msg(update, msg)
