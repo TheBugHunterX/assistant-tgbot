@@ -9,7 +9,7 @@ async def func_database(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
 
     if user.id != owner_id:
-        await Message.reply_msg(update, "Access denied!")
+        await Message.reply_message(update, "Access denied!")
         return
     
     db = await MongoDB.info_db()
@@ -26,4 +26,4 @@ async def func_database(update: Update, context: ContextTypes.DEFAULT_TYPE):
     active_status = await MongoDB.find("users", "active_status")
     active_users = active_status.count(True)
     inactive_users = active_status.count(False)
-    await Message.reply_msg(update, f"{msg}<b>Active users</b>: <code>{active_users}</code>\n<b>Inactive users</b>: <code>{inactive_users}</code>")
+    await Message.reply_message(update, f"{msg}<b>Active users</b>: <code>{active_users}</code>\n<b>Inactive users</b>: <code>{inactive_users}</code>")

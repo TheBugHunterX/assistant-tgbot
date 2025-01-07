@@ -20,4 +20,4 @@ async def func_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if user.id == owner_id:
         msg += "\n\nWelcome back Babe 💗"
 
-    await Message.reply_msg(update, msg)
+    await Message.reply_message(update, msg)

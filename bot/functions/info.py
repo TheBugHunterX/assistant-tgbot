@@ -23,7 +23,7 @@ async def func_info(update: Update, context: ContextTypes.DEFAULT_TYPE):
             victim = from_user
         
         if not victim:
-            await Message.reply_msg(update, f"<b>• Full name:</b> <code>{forward_origin.sender_user_name}</code>\n<i>Replied user account is hidden!</i>")
+            await Message.reply_message(update, f"<b>• Full name:</b> <code>{forward_origin.sender_user_name}</code>\n<i>Replied user account is hidden!</i>")
             return
     else:
         victim = user
@@ -50,16 +50,16 @@ async def func_info(update: Update, context: ContextTypes.DEFAULT_TYPE):
         }
 
         btn = await Button.ubutton(btn_data) if victim.username else None
-        await Message.reply_msg(update, msg, btn=btn)
+        await Message.reply_message(update, msg, btn=btn)
         return
     
     if user.id != owner_id:
-        await Message.reply_msg(update, "Access denied!")
+        await Message.reply_message(update, "Access denied!")
         return
 
     find_user = await MongoDB.find_one("users", "user_id", int(chat_id))
     if not find_user:
-        await Message.reply_msg(update, "User not found!")
+        await Message.reply_message(update, "User not found!")
         return
     
     entries = [
@@ -85,4 +85,4 @@ async def func_info(update: Update, context: ContextTypes.DEFAULT_TYPE):
         else:
             msg += f"<b>{key}</b>: <code>{data}</code>\n"
     
-    await Message.reply_msg(update, msg)
+    await Message.reply_message(update, msg)

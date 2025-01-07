@@ -12,11 +12,11 @@ async def func_broadcast(update: Update, context: ContextTypes.DEFAULT_TYPE):
     re_msg = update.message.reply_to_message
 
     if user.id != owner_id:
-        await Message.reply_msg(update, "Access denied!")
+        await Message.reply_message(update, "Access denied!")
         return
     
     if not re_msg:
-        await Message.reply_msg(update, "Reply a message to broadcast!")
+        await Message.reply_message(update, "Reply a message to broadcast!")
         return
     
     broadcast_msg = re_msg.text_html or re_msg.caption_html
@@ -31,18 +31,18 @@ async def func_broadcast(update: Update, context: ContextTypes.DEFAULT_TYPE):
             if filter_user_id[1] == True:
                 active_users.append(filter_user_id[0])
     else:
-        await Message.reply_msg(update, f"An error occured!\nuser_id: {len(user_id)} isn't equal to active_status: {len(active_status)} !!")
+        await Message.reply_message(update, f"An error occured!\nuser_id: {len(user_id)} isn't equal to active_status: {len(active_status)} !!")
         return
     
     sent_count, except_count = 0, 0
-    notify = await Message.send_msg(user.id, f"Total users: {len(users_id)}\nActive users: {len(active_users)}")
+    notify = await Message.send_message(user.id, f"Total users: {len(users_id)}\nActive users: {len(active_users)}")
     start_time = time.time()
 
     for user_id in active_users:
         if re_msg.text_html:
-            sent_msg = await Message.send_msg(user_id, broadcast_msg)
+            sent_msg = await Message.send_message(user_id, broadcast_msg)
         elif re_msg.caption_html:
-            sent_msg = await Message.send_img(user_id, re_msg.photo[-1].file_id, broadcast_msg)
+            sent_msg = await Message.send_image(user_id, re_msg.photo[-1].file_id, broadcast_msg)
         
         if not sent_msg:
             except_count += 1
@@ -50,7 +50,7 @@ async def func_broadcast(update: Update, context: ContextTypes.DEFAULT_TYPE):
             sent_count += 1
 
         progress = (sent_count + except_count) * 100 / len(active_users)
-        await Message.edit_msg(update, f"Total users: {len(users_id)}\nActive users: {len(active_users)}\nSent: {sent_count}\nException occurred: {except_count}\nProgress: {(progress):.2f}%", notify)
+        await Message.edit_message(update, f"Total users: {len(users_id)}\nActive users: {len(active_users)}\nSent: {sent_count}\nException occurred: {except_count}\nProgress: {(progress):.2f}%", notify)
         # sleep for 0.5 sec
         await asyncio.sleep(0.5)
     
@@ -59,4 +59,4 @@ async def func_broadcast(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if (end_time - start_time) > 60:
         time_took = f"{((end_time - start_time) / 60):.2f} min"
     
-    await Message.reply_msg(update, f"Broadcast Done!\nTime took: {time_took}")
+    await Message.reply_message(update, f"Broadcast Done!\nTime took: {time_took}")

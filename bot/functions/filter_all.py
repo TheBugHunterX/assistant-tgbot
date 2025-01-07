@@ -19,15 +19,15 @@ async def assistant_go(victim_id, e_msg):
     # video_note = e_msg.video_note
 
     if text:
-        sent_msg = await Message.send_msg(victim_id, text)
+        sent_msg = await Message.send_message(victim_id, text)
     elif photo:
-        sent_msg = await Message.send_img(victim_id, photo[-1].file_id, caption)
+        sent_msg = await Message.send_image(victim_id, photo[-1].file_id, caption)
     elif audio:
         sent_msg = await Message.send_audio(victim_id, audio.file_id, audio.file_name, caption)
     elif video:
-        sent_msg = await Message.send_vid(victim_id, video.file_id, caption=caption)
+        sent_msg = await Message.send_video(victim_id, video.file_id, caption=caption)
     elif document:
-        sent_msg = await Message.send_doc(victim_id, document.file_id, document.file_name, caption)
+        sent_msg = await Message.send_document(victim_id, document.file_id, document.file_name, caption)
     
     return sent_msg
 
@@ -43,7 +43,7 @@ async def func_filter_all(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if user.id == owner_id:
         # this section is for owner logic
         if not re_msg:
-            await Message.reply_msg(update, "Reply to user messages to send the message.")
+            await Message.reply_message(update, "Reply to user messages to send the message.")
             return
         
         # getting victim_id
@@ -58,27 +58,27 @@ async def func_filter_all(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 if len(check_msg) >= 2:
                     victim_id = check_msg[1]
                 else:
-                    await Message.reply_msg(update, "You have replied the wrong message.")
+                    await Message.reply_message(update, "You have replied the wrong message.")
                     return
             else:
-                await Message.reply_msg(update, "Reply to user messages to send the message.")
+                await Message.reply_message(update, "Reply to user messages to send the message.")
                 return
         
         if not victim_id:
-            await Message.reply_msg(update, "Error: victim_id not found!")
+            await Message.reply_message(update, "Error: victim_id not found!")
             return
         
         # check message type and send message to victim
         sent_msg = await assistant_go(victim_id, e_msg)
         if not sent_msg:
-            await Message.reply_msg(update, "Oops, something went wrong. Maybe <code>user id</code> wrong 🤔 or user blocked!!")
+            await Message.reply_message(update, "Oops, something went wrong. Maybe <code>user id</code> wrong 🤔 or user blocked!!")
             return
         
         reaction = "❤" if sent_msg else "👎"
-        await Message.react_msg(chat.id, e_msg.id, reaction)
+        await Message.react_message(chat.id, e_msg.id, reaction)
     else:
         # this section is for user logic
-        forwarded_msg = await Message.forward_msg(owner_id, chat.id, e_msg.id)
+        forwarded_msg = await Message.forward_message(owner_id, chat.id, e_msg.id)
         if e_msg.audio or forwarded_msg.forward_origin.type == MessageOriginType.HIDDEN_USER:
             # if user is hidden or its audio file
             msg = (
@@ -93,7 +93,7 @@ async def func_filter_all(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
             
             btn = await Button.ubutton({"User Profile": f"tg://user?id={user.id}"}) if user.username else None
-            await Message.send_msg(owner_id, msg, forwarded_msg.id, btn)
+            await Message.send_message(owner_id, msg, forwarded_msg.id, btn)
         
         reaction = "❤" if forwarded_msg else "👎"
-        await Message.react_msg(chat.id, e_msg.id, reaction)
+        await Message.react_message(chat.id, e_msg.id, reaction)

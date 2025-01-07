@@ -27,7 +27,7 @@ async def server_alive():
     global server_url
     if not server_url:
         logger.warning("SERVER_URL not provided !!")
-        await Message.send_msg(owner_id, "Warning! SERVER_URL not provided!")
+        await Message.send_message(owner_id, "Warning! SERVER_URL not provided!")
         return
     
     while True:

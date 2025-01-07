@@ -9,7 +9,7 @@ async def func_sys(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
 
     if user.id != owner_id:
-        await Message.reply_msg(update, "Access denied!")
+        await Message.reply_message(update, "Access denied!")
         return
     
     sys_info = (
@@ -38,4 +38,4 @@ async def func_sys(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"<b>Disk Usage Percent:</b> <code>{psutil.disk_usage('/')[3]} %</code>\n\n"
     )
 
-    await Message.reply_msg(update, sys_info)
+    await Message.reply_message(update, sys_info)

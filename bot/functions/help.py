@@ -18,4 +18,4 @@ async def func_help(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "<i>The bot is compatible with the <code>/</code>, <code>!</code>, and <code>.</code> command prefixes.</i>"
     )
 
-    await Message.reply_msg(update, msg)
+    await Message.reply_message(update, msg)
