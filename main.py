@@ -14,11 +14,11 @@ from bot.functions.start import func_start
 from bot.functions.help import func_help
 from bot.functions.id import func_id
 from bot.functions.info import func_info
-from bot.functions.broadcast import func_broadcast
-from bot.functions.database import func_database
-from bot.functions.log import func_log
-from bot.functions.shell import func_shell
-from bot.functions.sys import func_sys
+from bot.functions.owner_func.broadcast import func_broadcast
+from bot.functions.owner_func.database import func_database
+from bot.functions.owner_func.log import func_log
+from bot.functions.owner_func.shell import func_shell
+from bot.functions.owner_func.sys import func_sys
 from bot.functions.filter_all import func_filter_all
 from bot.modules.bot_chat_tracker.track_bot_chat import track_bot_chat_act
 
