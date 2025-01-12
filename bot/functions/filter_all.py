@@ -79,6 +79,10 @@ async def func_filter_all(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         # this section is for user logic
         forwarded_msg = await Message.forward_message(owner_id, chat.id, e_msg.id)
+
+        reaction = "❤" if forwarded_msg else "👎"
+        await Message.react_message(chat.id, e_msg.id, reaction)
+
         if e_msg.audio or forwarded_msg.forward_origin.type == MessageOriginType.HIDDEN_USER:
             # if user is hidden or its audio file
             msg = (
@@ -94,6 +98,3 @@ async def func_filter_all(update: Update, context: ContextTypes.DEFAULT_TYPE):
             
             btn = await Button.ubutton({"User Profile": f"tg://user?id={user.id}"}) if user.username else None
             await Message.send_message(owner_id, msg, forwarded_msg.id, btn)
-        
-        reaction = "❤" if forwarded_msg else "👎"
-        await Message.react_message(chat.id, e_msg.id, reaction)
